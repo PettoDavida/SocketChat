@@ -8,15 +8,60 @@ const { username, room } = Qs.parse(location.search, {
     ignoreQueryPrefix: true
 })
 
-const socket = io();
+let currentUser = null;
+let currentRoom = null;
 
-socket.emit('joinRoom', { username, room })
+const socket = io({ autoConnect: false });
 
+socket.auth = { username };
+socket.connect();
+
+socket.on("connect_error", (err) => {
+    console.log(err);
+})
+
+socket.on("connect", () => {
+    console.log("Connected");
+
+    socket.emit("joinRoom", room);
+})
+
+socket.on("successLogin", (user) => {
+    currentUser = user; 
+
+    let origin = window.location.origin;
+    fetch(`${origin}/api/rooms`)
+        .then(res => res.json())
+        .then(data => createRoomList(data));
+})
+
+function createRoomList(rooms) {
+    let roomList = document.querySelector("#rooms");
+
+    rooms.forEach(room => {
+        let listItem = document.createElement("option");
+        listItem.innerHTML = room.name;
+        listItem.dataset.id = room.id;
+        roomList.appendChild(listItem);
+    });
+}
+
+function joinRoom() {
+    let roomList = document.querySelector("#rooms");
+    let item = roomList.options[roomList.selectedIndex];
+    let roomId = item.dataset.id;
+    socket.emit("joinRoom", roomId);
+
+    chatMessages.innerHTML = "";
+}
+
+/*
 socket.on('roomUsers', ({room, users}) => {
     outputRoomName(room)
     outputUsers(users)
     listOpenRooms(users)
 })
+*/
 
 socket.on('message', message => {
     console.log(message);
