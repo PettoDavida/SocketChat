@@ -29,6 +29,10 @@ main{
     align-items: flex-start;
 }
 
+.chat {
+    width: calc(100% - 3rem);
+}
+
 .chat-div{
     height: 100%;
     width: 80%;
@@ -46,7 +50,6 @@ main{
 
 .create-message {
     display: flex;
-    justify-content: center;
     align-items: center;
 
     height: 10%;
