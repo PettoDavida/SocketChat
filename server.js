@@ -2,11 +2,10 @@ require("dotenv").config();
 
 const path = require('path');
 const http = require('http');
-const mongoose = require('mongoose');
 const express = require('express');
 const socketio= require('socket.io');
 const formatMessage = require('./utils/messages')
-const { createNewUser, userJoin, getCurrentUser, userLeave, getRoomUsers } = require('./utils/users')
+const { createNewUser } = require('./utils/users')
 const { userJoinRoom, userLeaveRoom, getRoomByUser } = require("./utils/rooms");
 
 const app = express()
@@ -14,16 +13,6 @@ const server = http.createServer(app)
 const io = socketio(server)
 
 const roomsRouter = require("./routes/rooms")
-
-mongoose.connect(process.env.MONGO_URI, { useNewUrlParser: true });
-const db = mongoose.connection;
-
-db.on('error', (err) => {
-    console.log("Mongoose Error");
-    console.log(err);
-});
-
-db.once('open', () => console.log("Connected to database"));
 
 app.use(express.json());
 app.use(express.static(path.join(__dirname, 'public')))
