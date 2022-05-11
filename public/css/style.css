@@ -2,6 +2,7 @@ body{
     margin: 0;
     padding: 0;
     overflow-x: hidden;
+    overflow-y: hidden;
     font-family: 'Inter', sans-serif;
     color: white;
 }
@@ -36,6 +37,7 @@ main{
     /* max-width: 70%; */
     min-width: 80%;
     background-color: #121212d7; 
+    overflow-y: scroll;
 }
 
 .write-message-div{
@@ -52,6 +54,8 @@ main{
     height: 100%;
     min-width: 20%;
     background-color: #121212d7;
+    overflow-y: scroll;
+    overflow-x: hidden;
 }
 
 .chat-info{
@@ -59,6 +63,8 @@ main{
     text-align: center;
     height: 100%;
     background-color: #121212d7;
+    display: flex;
+    flex-direction: row-reverse;
 }
 
 .user-info{
@@ -150,4 +156,45 @@ main{
     outline: 0;
     border: none;
     color: white;
+}
+
+ul.chatroom-list{
+    list-style-type: none;
+    margin:0;
+    padding: 0;
+}
+
+.participants-list{
+    text-align:start;
+    list-style-type: none;
+    margin:0;
+    padding: 0;
+    align-self: flex-start;
+    justify-self: flex-start;
+    margin: 1rem 0 0 1rem;
+}
+
+.participants-list-div{
+    width: 20%;
+}
+
+.chatroom-name-div{
+    width: 80%;
+}
+
+.chatroom-name-div > h2{
+    margin-right: 20%;
+}
+
+.create-chatroom{
+    margin-left: 1rem;
+    height: 25%;
+}
+
+.create-chatroom > input{
+    outline: 0;
+    border: none;
+    border-radius: 45px;
+    height: 80%;
+    width: 60%;
 }
