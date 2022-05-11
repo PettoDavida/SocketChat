@@ -3,6 +3,10 @@ const roomName = document.getElementById('roomName')
 const roomUsers = document.getElementById('roomUsers')
 const chatMessages = document.querySelector('.chat-messages')
 
+document.querySelector("#createRoomForm").addEventListener("submit", (e) => {
+    e.preventDefault();
+});
+
 // get username from url
 const { username, room } = Qs.parse(location.search, {
     ignoreQueryPrefix: true
@@ -17,7 +21,12 @@ socket.auth = { username };
 socket.connect();
 
 socket.on("connect_error", (err) => {
+    console.log("HEHEH");
     console.log(err);
+})
+
+socket.on("disconnect", () => {
+    window.location = "index.html";
 })
 
 socket.on("connect", () => {
@@ -25,6 +34,10 @@ socket.on("connect", () => {
 
     socket.emit("joinRoom", room);
 })
+
+socket.on("noRoom", () => {
+    window.location = "index.html";
+});
 
 socket.on("successLogin", (user) => {
     currentUser = user; 
@@ -37,6 +50,7 @@ socket.on("successLogin", (user) => {
 
 function createRoomList(rooms) {
     let roomList = document.querySelector("#rooms");
+    roomList.innerHTML = "";
 
     rooms.forEach(room => {
         let listItem = document.createElement("option");
@@ -53,6 +67,36 @@ function joinRoom() {
     socket.emit("joinRoom", roomId);
 
     chatMessages.innerHTML = "";
+}
+
+function createRoom() {
+    let name = document.querySelector("#createRoomName").value;
+
+    let obj = {
+        name,
+    }
+    let body = JSON.stringify(obj);
+
+    let origin = window.location.origin;
+    fetch(`${origin}/api/rooms`, {
+        method: "POST",
+        body,
+        headers: {
+            "Content-Type": "application/json"
+        }
+    })
+        .then(res => res.json())
+        .then(data => {
+            document.querySelector("#createRoomName").value = "";
+
+            socket.emit("joinRoom", data.id)
+            chatMessages.innerHTML = "";
+
+            let origin = window.location.origin;
+            fetch(`${origin}/api/rooms`)
+                .then(res => res.json())
+                .then(data => createRoomList(data));
+        });
 }
 
 /*

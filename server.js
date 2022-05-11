@@ -55,6 +55,11 @@ io.on('connection', (socket) => {
 
         roomId = parseInt(roomId);
         let room = userJoinRoom(roomId, socket.user.id);
+        if(!room) {
+            socket.emit("noRoom");
+            return;
+        }
+
         console.log(room);
         socket.join(room.name)
 
