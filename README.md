@@ -7,3 +7,5 @@ Map user.room för att se alla rum som existerar och se till så det inte finns 
 Se när andra användare skriver
 
 lista med rum när man redan är i ett rum
+
+http://localhost:3000/chat.html?username=petto
