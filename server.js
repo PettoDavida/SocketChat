@@ -50,6 +50,7 @@ io.on('connection', (socket) => {
     socket.on("joinRoom", (roomId) => {
         let oldRoom = getRoomByUser(socket.user.id);
         if(oldRoom) {
+            io.to(oldRoom.name).emit('message', formatMessage(admin, `${socket.user.username} has left the chat`))
             userLeaveRoom(oldRoom.id, socket.user.id);
         }
 
@@ -90,6 +91,7 @@ io.on('connection', (socket) => {
     socket.on('disconnect', () => {
         let oldRoom = getRoomByUser(socket.user.id);
         if(oldRoom) {
+            io.to(oldRoom.name).emit('message', formatMessage(admin, `${socket.user.username} has left the chat`))
             userLeaveRoom(oldRoom.id, socket.user.id);
         }
     });
