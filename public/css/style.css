@@ -1,0 +1,7 @@
+.chat-messages{
+    background: whitesmoke;
+    height: 450px;
+    width: 750px;
+    border: 1px solid black;
+    overflow: scroll;
+}
