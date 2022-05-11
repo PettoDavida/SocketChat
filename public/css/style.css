@@ -1,0 +1,153 @@
+body{
+    margin: 0;
+    padding: 0;
+    overflow-x: hidden;
+    font-family: 'Inter', sans-serif;
+    color: white;
+}
+
+header{
+    height: 15vh;
+    width: 100%;
+    display: flex;
+    flex-direction: row-reverse;
+    border-bottom: 1px solid #A5A5A5;
+}
+
+main{
+    height: 85vh;
+    width: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: flex-start;
+    flex-direction: row-reverse;
+}
+
+.chat-div{
+    height: 100%;
+    width: 80%;
+    display: flex;
+    flex-direction: column;
+    border-left: 1px solid #A5A5A5;
+}
+
+.chat-area{
+    height: 90%;
+    /* max-width: 70%; */
+    min-width: 80%;
+    background-color: #121212d7; 
+}
+
+.write-message-div{
+    height: 10%;
+    width: 100%;
+    background-color: #121212d7;
+    border-top: 1px solid #A5A5A5;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.sidebar{
+    height: 100%;
+    min-width: 20%;
+    background-color: #121212d7;
+}
+
+.chat-info{
+    min-width: 80%;
+    text-align: center;
+    height: 100%;
+    background-color: #121212d7;
+}
+
+.user-info{
+    min-width: 20%;
+    height: 100%;
+    background-color: #121212d7;
+    border-right: 1px solid #A5A5A5;
+}
+
+.chatroom{
+    min-height: 10%;
+    width: 100%;
+    border: 1px solid #A5A5A5;
+}
+
+.message{
+    min-height: 10%;
+    height: fit-content;
+    width: 100%;
+    font-weight: 600;
+}
+
+.messageRecieved{
+    display: flex;
+    justify-content: center;
+    align-items: flex-start;
+    flex-direction: column;
+}
+
+.messageSent{
+    display: flex;
+    justify-content: center;
+    align-items: flex-end;
+    flex-direction: column;
+}
+
+.message-data{
+    width: 100%;
+}
+
+.message-data > p{
+    margin: 0.5rem 2rem 0.5rem 2rem;
+    color: #ffffff9f
+}
+
+
+.recieved, .sent{
+    padding: 0.1rem 1.5rem;
+    max-width: 30%;
+    width: fit-content;
+    min-width: 5%;
+    border-radius: 45px;
+}
+
+.recieved{
+    background-color: white;
+    color: black;
+    margin-left: 1rem;
+}
+
+.sent{
+    background-color: #4478FF;
+    color: white;
+    margin-right: 1rem;
+}
+
+.input-div{
+    width: 80%;
+    height: 80%;
+    background-color: white;
+    border-radius: 45px;
+}
+
+.input-div > input{
+    height: 70%;
+    width: 90%;
+    margin: 0.5rem 0rem 0rem 1rem;
+    font-size: large;
+    outline: none;
+    border: none;
+}
+
+.send-button{
+    height: 100%;
+    width: 5%;
+    cursor: pointer;
+    font-size: 2rem;
+    background-color: transparent;
+    outline: 0;
+    border: none;
+    color: white;
+}

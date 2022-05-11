@@ -11,19 +11,20 @@
     "type": "git",
     "url": "git+https://github.com/PettoDavida/SocketChat.git"
   },
-  "contributors":[
-      {
-        "name": "Maximilian Widman",
-        "url": "https://github.com/PettoDavida"
-      },
-      {
-        "name": "Adrian Rydin",
-        "url": ""
-      },{
-        "name": "Edwin Körner",
-        "url": ""
-      }
-    ],
+  "contributors": [
+    {
+      "name": "Maximilian Widman",
+      "url": "https://github.com/PettoDavida"
+    },
+    {
+      "name": "Adrian Rydin",
+      "url": ""
+    },
+    {
+      "name": "Edwin Körner",
+      "url": ""
+    }
+  ],
   "license": "ISC",
   "bugs": {
     "url": "https://github.com/PettoDavida/SocketChat/issues"
