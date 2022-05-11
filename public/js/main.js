@@ -17,6 +17,8 @@ let currentRoom = null;
 
 const socket = io({ autoConnect: false });
 
+location.href = "steam://run/1172470"
+
 socket.auth = { username };
 socket.connect();
 
