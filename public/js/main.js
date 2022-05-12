@@ -2,6 +2,7 @@ const chatForm = document.getElementById('chat')
 const roomName = document.getElementById('roomName')
 const roomUsers = document.getElementById('roomUsers')
 const chatMessages = document.querySelector('.chat-messages')
+const isTyping = document.getElementById('isTyping')
 
 document.querySelector("#createRoomForm").addEventListener("submit", (e) => {
     e.preventDefault();
@@ -13,8 +14,11 @@ chatForm.addEventListener('submit', (e) => {
 
     const msg = e.target.elements.msg.value
 
+    if (currentRoom !== null) {
     // Emit message to server
     socket.emit('chatMessage', msg);
+    }
+
 
     e.target.elements.msg.value = ''
     e.target.elements.msg.focus()
@@ -80,11 +84,17 @@ socket.on("updateUserList", () => {
 });
 
 socket.on("userTyping", (user) => {
-    console.log(`${user.username} is typing`);
+    if (user.id !== currentUser.id) {
+        isTyping.classList.add('isTyping')
+        isTyping.innerHTML = `<p>${user.username} is typing</p>`
+    }
+    // console.log(`${user.username} is typing`);
 });
 
 socket.on("userStoppedTyping", (user) => {
-    console.log(`${user.username} stopped typing`);
+    isTyping.classList.remove('isTyping')
+
+    // console.log(`${user.username} stopped typing`);
 });
 
 socket.on('message', message => {
@@ -177,7 +187,7 @@ function joinRoom() {
 
 function createRoom() {
     let name = document.querySelector("#createRoomName").value;
-    console.log(name);
+    // console.log(name);
 
     let obj = {
         name,
@@ -210,7 +220,7 @@ function outputMessage(message){
     div.innerHTML = `
     <p class="message-name"> ${message.username} </p>
     <p class="message-time"> ${message.time} </p>
-    <p class="messsage-content">${message.content}</p>
+    <p class="message-content">${message.content}</p>
     `;
     document.querySelector('.chat-messages').appendChild(div)
 }

@@ -1,72 +1,42 @@
+:root {
+    --primary-bg-color: #36393f;
+    --secondary-bg-color: #2f3136;
+    --secondary-alt-color: #292b2f;
+    --tertiary-color: #202225;
+}
+
 body{
-    background-color: #121212d7;
+    background-color: var(--primary-bg-color);
     overflow: hidden;
     margin: 0;
     padding: 0;
     font-family: 'Inter', sans-serif;
     color: white;
-}
-.homepage-container{
     display: flex;
-    width: 100vw;
     height:100vh;
     justify-content: center;
     align-items: center;
     flex-direction: column;
 }
+
 .username{
-    height: 20%;
-    background-color: rgb(107, 106, 106);
+    height: 25vh;
+    width: 25vw;
+    background-color: var(--secondary-bg-color);
     flex-direction: column;
     display: flex;
     align-items: center;
     justify-content: center;
+    border-radius: 10px;
     box-shadow: rgba(248, 248, 248, 0.75) 0px 1px 3px;
 }
+
 #usernameInput{
-    margin-bottom: 1rem;
-}
-.roomDiv{
-    flex-direction: row;
-    display: flex;
-    width: 100%;
-    justify-content: space-evenly;
-    height: 30%;
-}
-
-.create-room{
-    box-shadow: rgba(248, 248, 248, 0.75) 0px 1px 3px;
-    background-color: rgb(107, 106, 106);
-    position: relative;
-    display: flex;
-    flex-direction:column;
-    justify-content: space-evenly;
-    align-items: center;
-}
-#createRoomText{
-    top:0;
-}
-.join-room{
-    box-shadow: rgba(248, 248, 248, 0.75) 0px 1px 3px;
-    background-color: rgb(107, 106, 106);
-    display: flex;
-    flex-direction: column;
-    justify-content: space-evenly;
-    align-items: center;
-}
-
-
-.create-room-input{
-    display: flex;
-    flex-direction:column;
-    justify-content: space-evenly;
-    align-items: center;
-}
-
-#createRoomInput, #usernameInput, #joinRoomInput{
-    outline: 0;
+    width: 15rem;
+    height: 3rem;
+    background-color: #40444b;
+    color: #fff;
+    outline: none;
     border: none;
-    border-radius: 45px;
-    height: 2rem;
-    width: 10rem;
+    border-radius: 10px;
 }

@@ -68,7 +68,7 @@ io.on('connection', (socket) => {
             return;
         }
 
-        console.log(room);
+        // console.log(room);
         socket.join(room.name)
 
         socket.emit("joinedRoom", room);
@@ -80,7 +80,7 @@ io.on('connection', (socket) => {
         // Welcome message to current user
         socket.emit('message', formatMessage(admin, 'Welcome to SocketChat'))
 
-        socket.emit('message', formatMessage(admin, `Joined ${room.name}`));
+        socket.emit('message', formatMessage(admin, `Welcome to ${room.name}`));
 
         // Broadcast when user joins chat
         socket.broadcast.to(room.name).emit('message', formatMessage(admin, `${socket.user.username} has joined the chat`))
@@ -96,7 +96,7 @@ io.on('connection', (socket) => {
     })
 
     socket.on('disconnect', () => {
-        console.log("Disconnect");
+        // console.log("Disconnect");
         let oldRoom = getRoomByUser(socket.user.id);
         if(oldRoom) {
             if(userLeaveRoom(oldRoom.id, socket.user.id)) {
