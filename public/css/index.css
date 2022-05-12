@@ -15,12 +15,16 @@ body{
     flex-direction: column;
 }
 .username{
-    height: 10%;
+    height: 20%;
     background-color: rgb(107, 106, 106);
     flex-direction: column;
     display: flex;
     align-items: center;
+    justify-content: center;
     box-shadow: rgba(248, 248, 248, 0.75) 0px 1px 3px;
+}
+#usernameInput{
+    margin-bottom: 1rem;
 }
 .roomDiv{
     flex-direction: row;
