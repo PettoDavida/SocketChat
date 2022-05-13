@@ -19,3 +19,5 @@ open terminal inside the project root folder and run
 ```
 npm run dev
 ```
+
+[Github](https://github.com/PettoDavida/socketchat/tree/main)
