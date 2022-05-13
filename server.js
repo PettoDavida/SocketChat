@@ -1,12 +1,9 @@
-require("dotenv").config();
-
 const path = require('path');
 const http = require('http');
-const mongoose = require('mongoose');
 const express = require('express');
 const socketio= require('socket.io');
 const formatMessage = require('./utils/messages')
-const { createNewUser, userJoin, getCurrentUser, userLeave, getRoomUsers } = require('./utils/users')
+const { createNewUser } = require('./utils/users')
 const { userJoinRoom, userLeaveRoom, getRoomByUser } = require("./utils/rooms");
 
 const app = express()
@@ -14,21 +11,14 @@ const server = http.createServer(app)
 const io = socketio(server)
 
 const roomsRouter = require("./routes/rooms")
-
-mongoose.connect(process.env.MONGO_URI, { useNewUrlParser: true });
-const db = mongoose.connection;
-
-db.on('error', (err) => {
-    console.log("Mongoose Error");
-    console.log(err);
-});
-
-db.once('open', () => console.log("Connected to database"));
+const usersRouter = require("./routes/users")
 
 app.use(express.json());
 app.use(express.static(path.join(__dirname, 'public')))
+app.locals.io = io;
 
 app.use("/api/rooms", roomsRouter);
+app.use("/api/users", usersRouter);
 
 const admin = 'SocketChat Bot'
 
@@ -47,11 +37,28 @@ io.use((socket, next) => {
 // Run when client connects
 io.on('connection', (socket) => {
     socket.emit("successLogin", socket.user);
+
+    socket.on("startTyping", () => {
+        let room = getRoomByUser(socket.user.id);
+        if(room) {
+            io.to(room.name).emit("userTyping", socket.user);
+        }
+    });
+
+    socket.on("endTyping", () => {
+        let room = getRoomByUser(socket.user.id);
+        if(room) {
+            io.to(room.name).emit("userStoppedTyping", socket.user);
+        }
+    });
+
     socket.on("joinRoom", (roomId) => {
         let oldRoom = getRoomByUser(socket.user.id);
         if(oldRoom) {
-            io.to(oldRoom.name).emit('message', formatMessage(admin, `${socket.user.username} has left the chat`))
-            userLeaveRoom(oldRoom.id, socket.user.id);
+            socket.leave(oldRoom.name);
+            if(userLeaveRoom(oldRoom.id, socket.user.id)) {
+                io.emit("updateRoomList");
+            }
         }
 
         roomId = parseInt(roomId);
@@ -61,24 +68,24 @@ io.on('connection', (socket) => {
             return;
         }
 
-        console.log(room);
+        // console.log(room);
         socket.join(room.name)
+
+        socket.emit("joinedRoom", room);
+
+        if(oldRoom) {
+            io.to(oldRoom.name).emit('message', formatMessage(admin, `${socket.user.username} has left the chat`))
+        }
 
         // Welcome message to current user
         socket.emit('message', formatMessage(admin, 'Welcome to SocketChat'))
 
-        socket.emit('message', formatMessage(admin, `Joined ${room.name}`));
+        socket.emit('message', formatMessage(admin, `Welcome to ${room.name}`));
 
         // Broadcast when user joins chat
         socket.broadcast.to(room.name).emit('message', formatMessage(admin, `${socket.user.username} has joined the chat`))
 
-        // Send info about users in room to frontend
-        /*
-        io.to(user.room).emit('roomUsers', {
-            room: user.room,
-            users: getRoomUsers(user.room)
-        })
-        */
+        io.to(room.name).emit("updateUserList");
     });
 
     socket.on('chatMessage', (msg) => {
@@ -89,57 +96,18 @@ io.on('connection', (socket) => {
     })
 
     socket.on('disconnect', () => {
+        // console.log("Disconnect");
         let oldRoom = getRoomByUser(socket.user.id);
         if(oldRoom) {
-            io.to(oldRoom.name).emit('message', formatMessage(admin, `${socket.user.username} has left the chat`))
-            userLeaveRoom(oldRoom.id, socket.user.id);
+            if(userLeaveRoom(oldRoom.id, socket.user.id)) {
+                io.emit("updateRoomList");
+            } else {
+                io.to(oldRoom.name).emit("updateUserList");
+                io.to(oldRoom.name).emit('message', formatMessage(admin, `${socket.user.username} has left the chat`))
+            }
         }
     });
 
-    /*
-    socket.on('joinRoom', ({ roomId }) => {
-
-        const user = userJoin(socket.id, username, room)
-
-        socket.join(user.room)
-
-        // Welcome message to current user
-        socket.emit('message', formatMessage(admin, 'Welcome to SocketChat'))
-
-        // Broadcast when user joins chat
-        socket.broadcast.to(user.room).emit('message', formatMessage(admin, `${user.username} has joined the chat`))
-
-        // Send info about users in room to frontend
-        io.to(user.room).emit('roomUsers', {
-            room: user.room,
-            users: getRoomUsers(user.room)
-        })
-
-    })
-
-
-    //listen for chatMessage
-    socket.on('chatMessage', (msg) => {
-        const user = getCurrentUser(socket.id)
-
-        io.to(user.room).emit('message', formatMessage(user.username, msg))
-    })
-
-    // Broadcast when user disconnects
-    socket.on('disconnect', () => {
-        const user = userLeave(socket.id)
-
-        if (user) {
-            io.to(user.room).emit('message', formatMessage(admin, `${user.username} has left the chat`))
-            
-            io.to(user.room).emit('roomUsers', {
-                room: user.room,
-                users: getRoomUsers(user.room)
-            })
-        }
-
-    })
-    */
 })
 
 const port = 3000

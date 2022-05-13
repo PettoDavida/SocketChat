@@ -1,9 +1,23 @@
 # SocketChat
-School group project where we are supposed to create a chatroom website with DMs
 
-TODO
-Map user.room för att se alla rum som existerar och se till så det inte finns några duplicates av rum om flera har samma rum.
+## About
 
-Se när andra användare skriver
+SocketChat is a webchat built with socket.io. SocketChat consists of rooms where users can chat. If a room is empty it will be deleted.
 
-lista med rum när man redan är i ett rum
+## Build Project
+
+open terminal inside the project root folder and run
+
+```
+npm i
+```
+
+## Start project
+
+open terminal inside the project root folder and run
+
+```
+npm run dev
+```
+
+[Github](https://github.com/PettoDavida/socketchat/tree/main)

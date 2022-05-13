@@ -16,6 +16,7 @@ router.post("/", (req, res) => {
 
     let room = createNewRoom(req.body.name);
     if(room) {
+        req.app.locals.io.emit("updateRoomList");
         res.status(201).json({ message: "Created new room", id: room.id });
     } else {
         res.status(500).json({ message: "Internal server error" });
